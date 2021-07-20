@@ -3,7 +3,7 @@ let $calc = document.getElementById('calc');
 let $price = document.querySelector('.pu').querySelector('span').textContent;
 let $subtotl = document.querySelector('.subtot').querySelector('span');
 let $quanty = document.querySelector('.qty').querySelector('input');
-console.log($quanty.textContent);
+console.log($quanty);
 let $total = document.querySelector('h2').querySelector('span');
 console.log($total);
 
@@ -11,12 +11,13 @@ console.log($total);
 let cantidad = 0; 
 $quanty.addEventListener('click',updateSubtot);
 
-function updateSubtot() {
-  cantidad ++;
-  $subtotl.innerHTML = Number($price) * cantidad;
+function updateSubtot(e) {
+  $subtotl.innerHTML = Number($price) * e.target.value;
 }
 
 function calcAll() {
   $total.innerHTML = $subtotl.textContent;
 }
+
 $calc.onclick = calcAll;
+
