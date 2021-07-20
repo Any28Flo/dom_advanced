@@ -1,23 +1,47 @@
 let $cart = document.querySelector('#cart tbody');
 let $calc = document.getElementById('calc');
+//Aqui traemos el precio
 let $price = document.querySelector('.pu').querySelector('span').textContent;
-let $subtotl = document.querySelector('.subtot').querySelector('span');
+//Aqui traemos el input de cantidad
 let $quanty = document.querySelector('.qty').querySelector('input');
-console.log($quanty);
+//Aqui el input de sub total
+let $subtotl = document.querySelector('.subtot').querySelector('span');
+
+//Aqui el input del total
 let $total = document.querySelector('h2').querySelector('span');
-console.log($total);
+
 
 //Esta variable recoge el valor de quantity en cada click dado con el evento de debajo
-let cantidad = 0; 
-$quanty.addEventListener('click',updateSubtot);
 
+ 
+/* $quanty.addEventListener('click',updateSubtot);
+/* 
 function updateSubtot(e) {
   $subtotl.innerHTML = Number($price) * e.target.value;
-}
+} */ 
 
-function calcAll() {
+/* function calcAll() {
   $total.innerHTML = $subtotl.textContent;
+} */
+
+$calc.onclick = calcAll2;
+
+let $price2 = document.querySelectorAll('.pu');
+let $quanty2 = Array.from(document.querySelectorAll('.qty'));
+let $subtotl2 = Array.from(document.querySelectorAll('.subtot'));
+
+$quanty2.forEach(el => el.querySelector('input').addEventListener('click',updateSubtot2));
+
+
+function updateSubtot2(e) {
+  /* $subtotl2.forEach((el, ind) => el.querySelector('span').innerHTML = Number($price2[ind].querySelector('span').textContent) * e.target.value) ; */
+  e.target.parentElement.parentElement.nextSibling.nextSibling.querySelector('span').textContent = Number(e.target.parentElement.parentElement.previousSibling.previousSibling.querySelector('span').textContent) * e.target.value;
 }
 
-$calc.onclick = calcAll;
+function calcAll2() {
+  let cuenta = 0;
+  $subtotl2.forEach(el => cuenta += Number(el.querySelector('span').textContent));
+  $total.innerHTML = cuenta;
+}
+
 
