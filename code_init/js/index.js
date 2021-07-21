@@ -8,40 +8,39 @@ let $quanty = document.querySelector('.qty').querySelector('input');
 let $subtotl = document.querySelector('.subtot').querySelector('span');
 
 //Aqui el input del total
-let $total = document.querySelector('h2').querySelector('span');
 
+$calc.onclick = calcAll;
 
-//Esta variable recoge el valor de quantity en cada click dado con el evento de debajo
-
- 
-/* $quanty.addEventListener('click',updateSubtot);
-/* 
-function updateSubtot(e) {
-  $subtotl.innerHTML = Number($price) * e.target.value;
-} */ 
-
-/* function calcAll() {
-  $total.innerHTML = $subtotl.textContent;
-} */
-
-$calc.onclick = calcAll2;
-
-let $price2 = document.querySelectorAll('.pu');
+//Aqui estan las variables del DOM
 let $quanty2 = Array.from(document.querySelectorAll('.qty'));
-let $subtotl2 = Array.from(document.querySelectorAll('.subtot'));
+let $delete = Array.from(document.getElementsByClassName('btn-delete'));
 
-$quanty2.forEach(el => el.querySelector('input').addEventListener('click',updateSubtot2));
+//Aqui se asignan los eventos
+$quanty2.forEach(el => el.querySelector('input').addEventListener('click',updateSubtot));
+$delete.forEach(el => el.addEventListener('click', deleteEl));
 
 
-function updateSubtot2(e) {
-  /* $subtotl2.forEach((el, ind) => el.querySelector('span').innerHTML = Number($price2[ind].querySelector('span').textContent) * e.target.value) ; */
+
+
+function updateSubtot(e) {
   e.target.parentElement.parentElement.nextSibling.nextSibling.querySelector('span').textContent = Number(e.target.parentElement.parentElement.previousSibling.previousSibling.querySelector('span').textContent) * e.target.value;
 }
 
-function calcAll2() {
+function calcAll() {
+  //Variable temporal para hacer la cuenta de los $subtotl2
   let cuenta = 0;
+
+  let $subtotl2 = Array.from(document.querySelectorAll('.subtot'));
+  let $total = document.querySelector('h2').querySelector('span');
   $subtotl2.forEach(el => cuenta += Number(el.querySelector('span').textContent));
   $total.innerHTML = cuenta;
+}
+
+function deleteEl(e) {
+  let grndParent = e.target.parentElement.parentElement.parentElement;
+  grndParent.removeChild(e.target.parentElement.parentElement);
+  //Esto se le agrega para que cuando borre el elemento tambien actualice el total
+  calcAll();
 }
 
 
