@@ -19,12 +19,15 @@ function updateSubtot($product) {
 
 function calcAll() {
   // Iteration 1.2
+  let total=0;
+  let calcTotal=document.querySelector('h2 span');
+  console.log(calcTotal.textContent);
   let products=$cart.getElementsByClassName('product');
-  console.log(products);
   for(let i=0;i<products.length;i++){
-    products[i]=updateSubtot(products[i]);
+    total=total+updateSubtot(products[i]);
   }
-  
+  console.log(total);
+  calcTotal.innerHTML=total;
 }
 
 $calc.onclick = calcAll;
