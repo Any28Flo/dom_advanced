@@ -2,6 +2,8 @@
 let $cart = document.querySelector('#cart tbody');
 //Se obtiene el elemento con id calc, que es un boton
 let $calc = document.getElementById('calc');
+//Trae todos los botones de eliminar mediante querySelectorAll
+let $borrar = document.querySelectorAll(".btn-delete");
 //Función donde se actualiza los subtotales
 function updateSubtot($product) {
   // Iteration 1.1
@@ -70,4 +72,27 @@ function calcAll() {
 }
 //Se maneja un eventeto de onclick si se presiona el boton se manda a llamar a la función calcAll
 $calc.onclick = calcAll;
+function deleteRow(e){
+  //Con e.currentTarget se obtiene el elemento actual
+  //donde ocurrio el evento, en otras palabras
+  //el boton que presionamos, se le saca su nodo padre
+  //y a ese nodo también se le saca su nodo padre
+  //para obtener el renglon que se va a eliminar
+  let renglon=e.currentTarget.parentNode.parentNode;
+  //Se selecciona al tbody
+  let cuerpo=document.querySelector("tbody");
+  //tbody es padre de los trow y debido a que se obtuvo
+  //antes el renglon a eliminar, lo unico que se tiene que 
+  //realizar ahora es remover el hijo del padre cuerpo, utilizanod
+  //el nodo de ese hijo.
+  cuerpo.removeChild(renglon);
+}
+//borra contiene todos los botones delete
+//Entonces se debe de hacer un foreach para cada boton delete,
+//correspondiente a su renglon
+$borrar.forEach(element => {
+  //Se le agrega el evento listener a element, que corresponde 
+  //a uno de los botones eliminar
+  element.addEventListener("click",deleteRow)
+});
 
