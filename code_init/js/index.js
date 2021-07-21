@@ -14,18 +14,27 @@ function updateSubtot($product) {
   let subTotal=$product.querySelectorAll(".subtot span");
   //Se seleccionan todas las etiquetas span de la clase name
   let nombreProducto=$product.querySelectorAll(".name span");
-  //Variable para almacenar el resultado
-  let resultado=0
+  //Variable para almacenar el resultado, en este caso será un arreglo para almacenar 
+  //los valores calculados y usarlos posteriormente
+  let resultado=[];
+  //Esta variable servira, para cuando un dato no sea valido y se pueda realizar la suma de 
+  //todas formas, pero sin sumar ese valor en el total.
+  let contadoraAux=0;
   //Se realiza un ciclo para recorrer todos los elementos que se obtuvo del querySelectorALL
   for(let i=0;i<cantidad.length;i++){
       //Se valida si los datos son validos, si son validos se cambia el texto de subtotal
     if(validadato(cantidad[i],nombreProducto[i])){
       //Se realiza la multiplicación, cambiando los sting a floar
-      resultado=parseFloat(cantidad[i].value)*parseFloat(precioUnitario[i].textContent);
+      //Se almacena en resultado[contadorAux], debido a que algunos valores si no pasan la validación
+      //No se suman
+      resultado[contadoraAux]=parseFloat(cantidad[i].value)*parseFloat(precioUnitario[i].textContent);
       //A la etiqueta span de subtot se le cambia el texto
-      subTotal[i].innerText=resultado;
+      subTotal[i].innerText=resultado[contadoraAux];
+      contadoraAux++;
     }
   }
+  //Regresa el arreglo
+  return resultado;
   
 }
 //Se valida que el dato es valido 
@@ -38,10 +47,25 @@ function validadato(cantidad,nombreProducto){
   }
   return true;
 }
+//Función para calcular el total, que se activa con un click
 function calcAll() {
   // Iteration 1.2
-  //Se manda a llamar la función updateSubtot
+  let sumaTotal=0;
+  //Se manda a llamar la función updateSubtot y regresa un arreglo de los subtotales
   arreglo=updateSubtot($cart);
+  //Si el arreglo esta vacio, no hay ningún valor valido en cuenta, por ende no se cambia el total
+  if(arreglo.length==0){
+    return;
+  }
+  //Se obtiene el elemento con el id total 
+  let total=document.getElementById("total");
+  //Este for, es para sumar los subtotales
+  for(let i=0;i<arreglo.length;i++){
+    sumaTotal+=arreglo[i];
+    
+  }
+  //Se cambia el texto, de la etiqueta span con id total, por el valor de la sumaTotal
+  total.innerText=sumaTotal;
 
 }
 //Se maneja un eventeto de onclick si se presiona el boton se manda a llamar a la función calcAll
