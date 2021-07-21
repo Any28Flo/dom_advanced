@@ -2,29 +2,31 @@
 let $cart = document.querySelector('#cart tbody');
 //Se obtiene el elemento con id calc, que es un boton
 let $calc = document.getElementById('calc');
-
-//Función donde se actualiza el subtotal
+//Función donde se actualiza los subtotales
 function updateSubtot($product) {
   // Iteration 1.1
-  //Se obtiene la etiqueta span de la clase .pu
-  let precioUnitario=$product.querySelector(".pu span");
-  //Prueba 
-  console.log(precioUnitario);
-  //Se obtiene la etiqueta input de la clase .qty
-  let cantidad=$product.querySelector(".qty input");
-  //Se obtiene la etiqueta span de la clase subtot
-  let subTotal=$product.querySelector(".subtot span");
-  //Se obtiene la etiqueta span de la clase name
-  let nombreProducto=$product.querySelector(".name span");
+  //En esta ocasión se seleccionan todas las etiquetas span de la clase pu
+  let precioUnitario=$product.querySelectorAll(".pu span");
+  //console.log(precioUnitario);
+  //Se seleccionan todas las etiquetas input de la clase qty
+  let cantidad=$product.querySelectorAll(".qty input");
+  //Se seleccionan todas las etiquetas span de la clase sub
+  let subTotal=$product.querySelectorAll(".subtot span");
+  //Se seleccionan todas las etiquetas span de la clase name
+  let nombreProducto=$product.querySelectorAll(".name span");
   //Variable para almacenar el resultado
-  let resultado=0;
-  //Se valida si los datos son validos, si son validos se cambia el texto de subtotal
-  if(validadato(cantidad,nombreProducto)){
-    //Se realiza la multiplicación
-    resultado=parseFloat(cantidad.value)*parseFloat(precioUnitario.textContent);
-    //A la etiqueta span de subtot se le cambia el texto
-    subTotal.innerText=resultado;
+  let resultado=0
+  //Se realiza un ciclo para recorrer todos los elementos que se obtuvo del querySelectorALL
+  for(let i=0;i<cantidad.length;i++){
+      //Se valida si los datos son validos, si son validos se cambia el texto de subtotal
+    if(validadato(cantidad[i],nombreProducto[i])){
+      //Se realiza la multiplicación, cambiando los sting a floar
+      resultado=parseFloat(cantidad[i].value)*parseFloat(precioUnitario[i].textContent);
+      //A la etiqueta span de subtot se le cambia el texto
+      subTotal[i].innerText=resultado;
+    }
   }
+  
 }
 //Se valida que el dato es valido 
 function validadato(cantidad,nombreProducto){
@@ -39,7 +41,8 @@ function validadato(cantidad,nombreProducto){
 function calcAll() {
   // Iteration 1.2
   //Se manda a llamar la función updateSubtot
-  updateSubtot($cart);  
+  arreglo=updateSubtot($cart);
+
 }
 //Se maneja un eventeto de onclick si se presiona el boton se manda a llamar a la función calcAll
 $calc.onclick = calcAll;
