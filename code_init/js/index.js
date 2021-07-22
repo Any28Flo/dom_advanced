@@ -4,6 +4,8 @@ let $cart = document.querySelector('#cart tbody');
 let $calc = document.getElementById('calc');
 //Trae todos los botones de eliminar mediante querySelectorAll
 let $borrar = document.querySelectorAll(".btn-delete");
+//
+let $enviar = document.querySelector("tfoot .new #create");
 //Función donde se actualiza los subtotales
 function updateSubtot($product) {
   // Iteration 1.1
@@ -90,9 +92,76 @@ function deleteRow(e){
 //borra contiene todos los botones delete
 //Entonces se debe de hacer un foreach para cada boton delete,
 //correspondiente a su renglon
+
+
+//Obtiene la información del ultimo renglon y 
+//crea un nuevo renglon con está iformación
+//con los mismos campos que los otros dos renglones
+//declarados en el html, además de sus funcionalidades
+//como calcular su subtotal o eliminar el renglon
+function enviarProducto(e){
+  //Se obtiene el nodo de la etiqueta tr con clase .new
+  let renglon=document.querySelector(".new");
+  //Se obtiene la etiqueta span con el id=nombre-producto
+  let nombreProducto=renglon.querySelector("#nombre-producto input");
+  console.log(nombreProducto);
+  //Se obtiene la etiqueta input con id precio
+  let precio=renglon.querySelector("#precio input");
+    //Se obtiene la etiqueta de tbody con el id cart
+  let $cart = document.querySelector('#cart tbody');
+  //Se compara para ver que los campos no sean vacios o el precio negativo
+  if(parseFloat(precio.value)>0&&nombreProducto.value.length>0){
+    //Se crea una etiquet tr
+    let nuevoRenglon=document.createElement("tr");
+    //A esa etiqueta tr, se le asigna a su código html
+    //el siguiente texto encerrado en las backticks
+    //donde se crea el renglon con todos los valores que
+    //tiene cada renglon en el html
+    nuevoRenglon.innerHTML=
+    `<tr class="product">
+    <td class="name">
+      <span>${nombreProducto.value}</span>
+    </td>
+
+    <td class="pu">
+      $<span>${parseFloat(precio.value).toFixed(2)}</span>
+    </td>
+
+    <td class="qty">
+      <label>
+        <input type="number" value="0" min="0">
+      </label>
+    </td>
+
+    <td class="subtot" >
+      $<span>0</span>
+    </td>
+
+    <td class="rm">
+      <button class="btn btn-delete">Delete</button>
+    </td>
+  </tr>
+  `;
+  //Se añade al tbody este nuevo renglon
+    $cart.appendChild(nuevoRenglon);
+    //Se agarran todos los botones delete
+    let $borrar = document.querySelectorAll(".btn-delete");
+    //Como se creo un nuevo renglon, se debe asignar a su boton delete
+    //su correspondiente evento, para borrar ese renglon    
+    $borrar[$borrar.length-1].addEventListener('click',deleteRow);
+    //Una vez insertado el dato, ponemos de nuevo en vacio 
+    //los campos de llenado del ultimo renglon
+    nombreProducto.value="";
+    precio.value="";
+  }
+}
+
 $borrar.forEach(element => {
   //Se le agrega el evento listener a element, que corresponde 
   //a uno de los botones eliminar
   element.addEventListener("click",deleteRow)
 });
-
+console.log($enviar);
+//Se añade el evento al boton de create para enviar
+//el nuevo producto con la funcion enviarProducto
+$enviar.addEventListener("click",enviarProducto)
